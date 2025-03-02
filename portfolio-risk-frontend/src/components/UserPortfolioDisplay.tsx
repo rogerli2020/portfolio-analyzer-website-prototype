@@ -12,18 +12,19 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-
-interface PortfolioItem {
-    ticker: string;
-    quantity: number;
-    position: "long" | "short";
-  }
+import { useDispatch, useSelector } from "react-redux";
+import { PortfolioItem } from '../interfaces/portfolioItem';
+import { updateQueryPortfolio } from '../redux/actions/queryPortfolioActions';
+import { PortfolioQuery } from '../interfaces/portfolioQuery';
 
 export default function UserPortfolioDisplay() {
+    const dispatch = useDispatch();
+    const queryPortfolio = useSelector((state: any) => state.queryPortfolio);
 
     const [stockPosition, setStockPosition] = useState<"long" | "short">("long");
     const [stockTicker, setStockTicker] = useState<string>("");
     const [stockQuantity, setStockQuantity] = useState<string>("");
+    const [timeHorizon, setTimeHorizon] = useState<string>("0");
     const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
 
     const handleStockPositionChange = (event: SelectChangeEvent) => {
@@ -36,6 +37,10 @@ export default function UserPortfolioDisplay() {
 
     const handleStockQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setStockQuantity(event.target.value);
+    };
+
+    const handleTimeHorizonChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTimeHorizon(event.target.value);
     };
 
     const handleNewStockPosition = () => {
@@ -51,6 +56,10 @@ export default function UserPortfolioDisplay() {
         setStockTicker("");
         setStockQuantity("");
         setPortfolio([...portfolio, newItem]);
+    };
+
+    const handleResetPortfolio = () => {
+        setPortfolio([]);
     };
 
     
@@ -120,10 +129,29 @@ export default function UserPortfolioDisplay() {
             <Button variant="contained" sx={{ minWidth: 120 }} onClick={handleNewStockPosition}>Add to portfolio</Button>
           </Box>
         </Box>
-        <Button variant="contained" color="primary" sx={{marginTop : 2}}>
+        <TextField 
+              id="timehorizon-field" 
+              label="Time Horizon (Days)" 
+              value={timeHorizon} 
+              onChange={handleTimeHorizonChange} 
+              variant="filled"
+              type="number"
+            />
+                <Button variant="contained" color="primary" sx={{marginTop : 2}}
+                    onClick={
+                        () => {
+                            const newQueryPortfolio : PortfolioQuery = {
+                                portfolio: portfolio,
+                                time_horizon: Number(timeHorizon)
+                            }
+                            dispatch(updateQueryPortfolio(newQueryPortfolio));
+                        }
+                    }
+
+                >
                     Calculate Risk Metrics
                 </Button>
-                <Button variant="contained" color="error" sx={{marginTop : 2}}>
+                <Button variant="contained" color="error" sx={{marginTop : 2}} onClick={handleResetPortfolio}>
                     Reset Portfolio
                 </Button>
         </Box>
