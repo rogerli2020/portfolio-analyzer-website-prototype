@@ -1,5 +1,5 @@
 export interface PortfolioItem {
     ticker: string;
     quantity: number;
-    position: "long" | "short";
+    position_type: "long" | "short";
 }

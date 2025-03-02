@@ -1,6 +1,6 @@
 import { PortfolioQuery } from "../../interfaces/portfolioQuery";
 const initialState : PortfolioQuery = {
-    portfolio: [],
+    positions: [],
     time_horizon: 0}
 
 interface UpdateQueryPortfolioAction {

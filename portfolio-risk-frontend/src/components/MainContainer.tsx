@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import UserPortfolioDisplay from './UserPortfolioDisplay';
+import RiskDisplay from './RiskDisplay';
 
 export default function MainContainer() {
 
@@ -17,6 +18,7 @@ export default function MainContainer() {
         </Typography>
 
         <UserPortfolioDisplay/>
+        <RiskDisplay/>
 
       </Card>
     </Box>

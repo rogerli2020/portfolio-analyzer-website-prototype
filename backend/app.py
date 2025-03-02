@@ -1,34 +1,40 @@
-from flask import Flask
-from flask_restx import Resource, Api
+from flask import Flask, request
+from flask_restx import Resource, Api, reqparse
+from flask_cors import CORS
 from riskutils.risk_util_query import RiskUtilQuery
 from riskutils.exceptions import *
-from flask_restx import reqparse
 
 app = Flask(__name__)
+CORS(app)
+
 api = Api(app)
 
-portfolioparser = reqparse.RequestParser()
-portfolioparser.add_argument('positions', type=list, location='json', 
-                    required=True, help="positions must be a list")
-portfolioparser.add_argument('time_horizon', type=int, location='json', 
-                    required=True, help="positions must be an int")
-
-@api.route('/hello')
-class HelloWorld(Resource):
-    def get(self):
-        return {'hello': 'world'}
-    
 @api.route('/calcrisk')
 class CalcRisk(Resource):
-    def get(self):
-        args = portfolioparser.parse_args()
+    def options(self):
+        """Handle CORS preflight request"""
+        return {'Allow': 'POST'}, 200, {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type'
+        }
+
+    def post(self):
         try:
-            this_request = RiskUtilQuery(args["positions"], args["time_horizon"])
+            data = request.get_json()
+            positions = data.get("positions")
+            time_horizon = data.get("time_horizon")
+
+            if not isinstance(positions, list) or not isinstance(time_horizon, int):
+                return {"message": "Invalid input data"}, 400
+
+            this_request = RiskUtilQuery(positions, time_horizon)
             return this_request.get_query_results(), 200
+
         except DataScrapingError:
             return {"message": "Data scraping error"}, 500
-        except:
-            return {"message": "unknown server error"}, 500
+        except Exception as e:
+            return {"message": f"Unknown server error: {str(e)}"}, 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5000)

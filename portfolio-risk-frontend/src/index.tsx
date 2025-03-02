@@ -4,6 +4,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import { SnackbarProvider, VariantType, useSnackbar } from 'notistack';
 
 document.title = 'Simple Risk Analyzer';
 
@@ -12,7 +13,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <Provider store={store}>
-        <App />
+    <SnackbarProvider maxSnack={5}>
+      <App />
+    </SnackbarProvider>
   </Provider>
 );
 

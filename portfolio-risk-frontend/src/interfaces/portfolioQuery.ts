@@ -1,6 +1,6 @@
 import { PortfolioItem } from './portfolioItem';
 
 export interface PortfolioQuery {
-    portfolio: PortfolioItem[];
+    positions: PortfolioItem[];
     time_horizon: number;
 }

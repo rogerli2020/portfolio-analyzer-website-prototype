@@ -2,9 +2,11 @@
 
 import { combineReducers } from 'redux';
 import queryPortfolioReducer from './queryPortfolioReducer';
+import riskStatsReducer from './riskStatsSlice';
 
 const rootReducer = combineReducers({
-    queryPortfolio: queryPortfolioReducer
+    queryPortfolio: queryPortfolioReducer,
+    riskStats: riskStatsReducer
 });
 
 export default rootReducer;

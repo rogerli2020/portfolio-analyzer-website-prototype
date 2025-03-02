@@ -16,10 +16,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { PortfolioItem } from '../interfaces/portfolioItem';
 import { updateQueryPortfolio } from '../redux/actions/queryPortfolioActions';
 import { PortfolioQuery } from '../interfaces/portfolioQuery';
+import { enqueueSnackbar } from 'notistack'
+import { fetchRiskStats } from '../redux/reducers/riskStatsSlice';
+import type { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 
 export default function UserPortfolioDisplay() {
-    const dispatch = useDispatch();
-    const queryPortfolio = useSelector((state: any) => state.queryPortfolio);
+    const dispatch = useDispatch<ThunkDispatch<any, any, AnyAction>>(); // Quick fix!
 
     const [stockPosition, setStockPosition] = useState<"long" | "short">("long");
     const [stockTicker, setStockTicker] = useState<string>("");
@@ -50,7 +52,7 @@ export default function UserPortfolioDisplay() {
         const newItem : PortfolioItem = {
             ticker: stockTicker,
             quantity: Number(stockQuantity),
-            position: stockPosition as "long" | "short"
+            position_type: stockPosition as "long" | "short"
         }
         setStockPosition("long");
         setStockTicker("");
@@ -61,6 +63,22 @@ export default function UserPortfolioDisplay() {
     const handleResetPortfolio = () => {
         setPortfolio([]);
     };
+
+    const handleSubmission = () => {
+        const newQueryPortfolio : PortfolioQuery = {
+            positions: portfolio,
+            time_horizon: Number(timeHorizon)
+        }
+
+        dispatch(fetchRiskStats(newQueryPortfolio))
+        .unwrap()
+        .then(() => {
+            enqueueSnackbar("Risk stats updated!", { variant: "success" });
+        })
+        .catch((error) => {
+            enqueueSnackbar(`Error: ${error}`, { variant: "error" });
+        });
+    }
 
     
     return (
@@ -88,7 +106,7 @@ export default function UserPortfolioDisplay() {
                             {row?.ticker}
                         </TableCell>
                         <TableCell align="right">{row?.quantity}</TableCell>
-                        <TableCell align="right">{row?.position}</TableCell>
+                        <TableCell align="right">{row?.position_type}</TableCell>
                         </TableRow>
                     ))}
                     </TableBody>
@@ -137,21 +155,22 @@ export default function UserPortfolioDisplay() {
               variant="filled"
               type="number"
             />
-                <Button variant="contained" color="primary" sx={{marginTop : 2}}
-                    onClick={
-                        () => {
-                            const newQueryPortfolio : PortfolioQuery = {
-                                portfolio: portfolio,
-                                time_horizon: Number(timeHorizon)
-                            }
-                            dispatch(updateQueryPortfolio(newQueryPortfolio));
-                        }
-                    }
 
+                <Button 
+                    variant="contained" 
+                    color="primary" 
+                    sx={{marginTop : 2}}
+                    onClick={handleSubmission}
                 >
                     Calculate Risk Metrics
                 </Button>
-                <Button variant="contained" color="error" sx={{marginTop : 2}} onClick={handleResetPortfolio}>
+
+                <Button 
+                    variant="contained" 
+                    color="error" 
+                    sx={{marginTop : 2}} 
+                    onClick={handleResetPortfolio}
+                >
                     Reset Portfolio
                 </Button>
         </Box>
