@@ -37,7 +37,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build --remote origin --repo https://github.com/rogerli2020/portfolio-analyzer-website-prototype"
   },
   "eslintConfig": {
     "extends": [
