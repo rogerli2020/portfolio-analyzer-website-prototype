@@ -30,7 +30,6 @@ const initialState: RiskStats = {
 export const loadExampleData = createAction('loadExampleData');
 
 
-// fetchRiskStats action
 export const fetchRiskStats = createAsyncThunk(
   'riskStats/fetchRiskStats',
   async (portfolioQuery: any, { rejectWithValue }) => {
@@ -45,7 +44,9 @@ export const fetchRiskStats = createAsyncThunk(
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch risk stats');
+        const errorMsg = await response.json();
+        const message = errorMsg.message || JSON.stringify(errorMsg);
+        throw new Error(message);
       }
 
       return await response.json(); // Return response data
