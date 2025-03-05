@@ -29,7 +29,6 @@ const initialState: RiskStats = {
 
 export const loadExampleData = createAction('loadExampleData');
 
-
 export const fetchRiskStats = createAsyncThunk(
   'riskStats/fetchRiskStats',
   async (portfolioQuery: any, { rejectWithValue }) => {
@@ -49,7 +48,9 @@ export const fetchRiskStats = createAsyncThunk(
         throw new Error(message);
       }
 
-      return await response.json(); // Return response data
+      const newRiskStats: RiskStats = await response.json();
+      return newRiskStats;
+      
     } catch (error: any) {
       return rejectWithValue(error.message);
     }

@@ -17,7 +17,7 @@ export default function MainContainer() {
           Enter your portfolio and choose a time horizon to calculate its Value at Risk (VaR), Expected Shortfall (ES), and volatility.
         </Typography>
         <Typography variant="subtitle2">
-          Backend server is needed for the web app, but you an generate example data by clicking "LOAD EXAMPLE DATA".
+          Backend server is needed for the web app, but you can generate example data by clicking "LOAD EXAMPLE DATA".
         </Typography>
 
         <UserPortfolioDisplay/>
