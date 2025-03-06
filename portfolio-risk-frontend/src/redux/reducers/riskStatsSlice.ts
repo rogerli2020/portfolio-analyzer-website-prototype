@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, createAction, PayloadAction } from '@reduxjs/toolkit';
 import { RiskStats } from '../../interfaces/riskStats';
 import exampleRiskStats from '../../components/util/exampleDataset';
+import { PortfolioQuery } from '../../interfaces/portfolioQuery';
 
 // Example State
 const exampleState: RiskStats = exampleRiskStats;
@@ -29,7 +30,7 @@ const initialState: RiskStats = {
 
 export const loadExampleData = createAction('loadExampleData');
 
-export const fetchRiskStats = createAsyncThunk(
+export const fetchRiskStats = createAsyncThunk<RiskStats, PortfolioQuery>(
   'riskStats/fetchRiskStats',
   async (portfolioQuery: any, { rejectWithValue }) => {
     try {
@@ -82,4 +83,11 @@ const riskStatsSlice = createSlice({
 
 
 export const { updateRiskStats } = riskStatsSlice.actions;
+
+export type RiskStatsActions =
+| ReturnType<typeof riskStatsSlice.actions.updateRiskStats>
+| ReturnType<typeof loadExampleData>
+| ReturnType<typeof fetchRiskStats.fulfilled>
+| ReturnType<typeof fetchRiskStats.rejected>;
+
 export default riskStatsSlice.reducer;

@@ -12,16 +12,17 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { PortfolioItem } from '../interfaces/portfolioItem';
-import { updateQueryPortfolio } from '../redux/actions/queryPortfolioActions';
 import { PortfolioQuery } from '../interfaces/portfolioQuery';
 import { enqueueSnackbar } from 'notistack'
 import { fetchRiskStats } from '../redux/reducers/riskStatsSlice';
-import type { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import type { ThunkDispatch } from "@reduxjs/toolkit";
+import { RiskStats } from '../interfaces/riskStats';
+import { RiskStatsActions } from '../redux/reducers/riskStatsSlice';
 
 export default function UserPortfolioDisplay() {
-    const dispatch = useDispatch<ThunkDispatch<any, any, AnyAction>>(); // Quick fix!
+    const dispatch = useDispatch<ThunkDispatch<RiskStats, void, RiskStatsActions>>(); // Quick fix!
 
     const [stockPosition, setStockPosition] = useState<"long" | "short">("long");
     const [stockTicker, setStockTicker] = useState<string>("");
