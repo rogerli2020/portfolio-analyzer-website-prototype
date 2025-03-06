@@ -15,9 +15,9 @@ import {
     BarElement,
   } from 'chart.js';
 import { Line, Bar } from 'react-chartjs-2';
-import { UseDispatch } from 'react-redux';
 import { loadExampleData } from '../redux/reducers/riskStatsSlice';
 import { enqueueSnackbar } from 'notistack'
+import { Divider } from '@mui/material';
 
 ChartJS.register(
     CategoryScale,
@@ -112,7 +112,7 @@ export default function RiskDisplay() {
 
     return (
         <Box sx={{marginTop : 6}}>
-
+            <Divider />
             <Typography variant="h5">
                 PORTFOLIO RISK MEASURES             
                 <Button 

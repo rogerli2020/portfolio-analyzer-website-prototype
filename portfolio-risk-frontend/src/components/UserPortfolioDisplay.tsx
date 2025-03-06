@@ -20,6 +20,7 @@ import { fetchRiskStats } from '../redux/reducers/riskStatsSlice';
 import type { ThunkDispatch } from "@reduxjs/toolkit";
 import { RiskStats } from '../interfaces/riskStats';
 import { RiskStatsActions } from '../redux/reducers/riskStatsSlice';
+import { Divider } from '@mui/material';
 
 export default function UserPortfolioDisplay() {
     const dispatch = useDispatch<ThunkDispatch<RiskStats, void, RiskStatsActions>>(); // Quick fix!
@@ -84,6 +85,7 @@ export default function UserPortfolioDisplay() {
     
     return (
         <Box sx={{marginTop : 5}}>
+            <Divider />
             <Typography variant="h5">
                 YOUR PORTFOLIO
             </Typography>

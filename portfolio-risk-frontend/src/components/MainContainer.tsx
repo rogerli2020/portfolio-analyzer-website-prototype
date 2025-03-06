@@ -26,6 +26,7 @@ export default function MainContainer() {
         </Link>
 
         <UserPortfolioDisplay/>
+
         <RiskDisplay/>
 
       </Card>
