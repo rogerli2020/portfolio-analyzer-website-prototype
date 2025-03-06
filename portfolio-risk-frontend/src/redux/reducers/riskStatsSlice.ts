@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, createAction, PayloadAction } from '@reduxjs/toolkit';
 import { RiskStats } from '../../interfaces/riskStats';
-import exampleRiskStats from '../../components/util/exampleDataset';
+import exampleRiskStats from '../../util/exampleDataset';
 import { PortfolioQuery } from '../../interfaces/portfolioQuery';
 
 // Example State

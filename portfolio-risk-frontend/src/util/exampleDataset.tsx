@@ -1,4 +1,4 @@
-import { RiskStats } from "../../interfaces/riskStats"
+import { RiskStats } from "../interfaces/riskStats";
 
 const exampleRiskStats : RiskStats = {
     "portfolio_volatility": 3.228174822978807,
