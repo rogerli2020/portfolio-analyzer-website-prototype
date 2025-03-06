@@ -4,6 +4,8 @@ import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import UserPortfolioDisplay from './UserPortfolioDisplay';
 import RiskDisplay from './RiskDisplay';
+import Link from '@mui/material/Link';
+
 
 export default function MainContainer() {
 
@@ -19,6 +21,9 @@ export default function MainContainer() {
         <Typography variant="subtitle2">
           Backend server is needed for the web app, but you can generate example data by clicking "LOAD EXAMPLE DATA".
         </Typography>
+        <Link href="https://github.com/rogerli2020/portfolio-analyzer-website-prototype" variant="body2">
+          {'GitHub Link'}
+        </Link>
 
         <UserPortfolioDisplay/>
         <RiskDisplay/>
