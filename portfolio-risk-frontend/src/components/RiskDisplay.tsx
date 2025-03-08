@@ -128,24 +128,24 @@ export default function RiskDisplay() {
             <Box sx={{marginBottom:2}}/>
 
             <Typography variant="body1">
-                Portfolio Daily Volatility: {riskData.portfolio_volatility.toPrecision(4)}
+                Portfolio Daily Volatility: {riskData.portfolio_volatility.toPrecision(4)}%
             </Typography>
             <Typography variant="body1">
-                Portfolio 5% Value at Risk: {(riskData.portfolio_VaR*100.0).toPrecision(4)}%
+                Portfolio 5% Value at Risk: {(riskData.portfolio_VaR).toPrecision(2)}$
             </Typography>
             <Typography variant="body1">
-                Portfolio 5% Expected Shortfall: {(riskData.portfolio_ES*100.0).toPrecision(4)}%
+                Portfolio 5% Expected Shortfall: {(riskData.portfolio_ES).toPrecision(2)}$
             </Typography>
 
             <Box sx={{m:1}}></Box>
             <Typography variant="body1">
-                S&P500 Daily Volatility: {riskData.sp500_volatility.toPrecision(4)}
+                S&P500 Daily Volatility: {riskData.sp500_volatility.toPrecision(4)}%
             </Typography>
             <Typography variant="body1">
-                S&P500  5% Value at Risk: {(riskData.sp500_VaR*100.0).toPrecision(4)}%
+                S&P500  5% Value at Risk: {(riskData.sp500_VaR).toPrecision(2)}$
             </Typography>
             <Typography variant="body1">
-                S&P500  5% Expected Shortfall: {(riskData.sp500_ES*100.0).toPrecision(4)}%
+                S&P500  5% Expected Shortfall: {(riskData.sp500_ES).toPrecision(2)}$
             </Typography>
 
             <Line options={options} data={data}></Line>

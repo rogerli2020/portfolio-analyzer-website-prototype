@@ -49,7 +49,7 @@ class Portfolio:
         def get_historical_prices(ticker, start_date, end_date):
             try:
                 data = yf.download(ticker, start=start_date, end=end_date)
-                print(data.head())
+                # print(data.head())
                 data = data[["Close"]]
                 return data
             except Exception as e:
@@ -73,8 +73,8 @@ class Portfolio:
             initial_portfolio_value = self.portfolio_time_series["Total Value"].dropna().iloc[0]
             initial_sp500_value = self.sp500_time_series["Close"].dropna().iloc[0]
 
-            print(initial_portfolio_value, type(initial_portfolio_value))
-            print(initial_sp500_value, type(initial_sp500_value))
+            # print(initial_portfolio_value, type(initial_portfolio_value))
+            # print(initial_sp500_value, type(initial_sp500_value))
             self.sp500_time_series["Close"] = (
                 self.sp500_time_series["Close"] * (
                     initial_portfolio_value / initial_sp500_value
@@ -120,10 +120,14 @@ class Portfolio:
 
     def get_sp500_risk_measures(self, confidence_level=0.95):
         log_returns = np.log(self.sp500_time_series["Close"] / self.sp500_time_series["Close"].shift(1)).dropna()
-        
+        initial_sp500_value = self.sp500_time_series["Close"]["^GSPC"].dropna().iloc[0]
+
         volatility = log_returns.std().squeeze() * np.sqrt(252)  # Annualized volatility
-        var = np.percentile(log_returns, (1 - confidence_level) * 100)  # Historical VaR
-        es = log_returns[log_returns <= var].mean().squeeze()  # Expected Shortfall (Conditional VaR)
+        percentage_var = np.percentile(log_returns, (1 - confidence_level) * 100)  # Historical VaR
+        var = np.abs(initial_sp500_value * percentage_var)
+
+        es = log_returns[log_returns <= percentage_var].mean().squeeze()  # Expected Shortfall (Conditional VaR)
+        es = np.abs(initial_sp500_value * es)
 
         return {
             "sp500_volatility": volatility,
@@ -133,10 +137,13 @@ class Portfolio:
 
     def get_portfolio_risk_measures(self, confidence_level=0.95):
         log_returns = np.log(self.portfolio_time_series["Total Value"] / self.portfolio_time_series["Total Value"].shift(1)).dropna()
+        initial_portfolio_value = self.portfolio_time_series["Total Value"].dropna().iloc[0]
 
         volatility = log_returns.std() * np.sqrt(252)  # Annualized volatility
-        var = np.percentile(log_returns, (1 - confidence_level) * 100)  # Historical VaR
-        es = log_returns[log_returns <= var].mean()  # Expected Shortfall (Conditional VaR)
+        percentage_var = np.percentile(log_returns, (1 - confidence_level) * 100)  # Historical VaR
+        var = np.abs(percentage_var * initial_portfolio_value)
+        es = log_returns[log_returns <= percentage_var].mean()  # Expected Shortfall (Conditional VaR)
+        es = np.abs(es * initial_portfolio_value)
 
         return {
             "portfolio_volatility": volatility,
